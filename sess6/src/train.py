@@ -1,7 +1,7 @@
 import torch.nn.functional as F
 from tqdm import tqdm
 
-def train(model, device, train_loader, optimizer, lambda_l1=None):
+def train_epoch(model, device, train_loader, optimizer, lambda_l1=None):
     train_losses = []
     train_acc = []
 
