@@ -1,5 +1,11 @@
+import torch.optim as optim
 import torch.nn.functional as F
 from tqdm import tqdm
+
+
+def get_optimizer(params, lr=0.01, momentum=0.9, weight_decay=0):
+    return optim.SGD(params, lr=lr, momentum=momentum, weight_decay=weight_decay)
+
 
 def train_epoch(model, device, train_loader, optimizer, lambda_l1=None):
     train_losses = []
@@ -34,7 +40,5 @@ def train_epoch(model, device, train_loader, optimizer, lambda_l1=None):
         pbar.set_description(
             desc=f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
         train_acc.append(100*correct/processed)
-    
-    return train_losses, train_acc
-    
 
+    return train_losses, train_acc
