@@ -3,7 +3,7 @@ import torch
 
 from .transformations import get_train_test_transforms
 
-def get_dataloaders(seed=42):
+def get_dataloaders(train_batch_size=None, val_batch_size=None, seed=42):
     train_transforms, test_transforms = get_train_test_transforms()
 
     train_ds = datasets.MNIST('./data', train=True, download=True, transform=train_transforms)
@@ -16,10 +16,14 @@ def get_dataloaders(seed=42):
     if cuda:
         torch.cuda.manual_seed(seed)
 
-    dataloader_args = dict(shuffle=True, batch_size=128, num_workers=4, pin_memory=True) if cuda else dict(shuffle=True, batch_size=64)
+    train_batch_size = train_batch_size or (128 if cuda else 64)
+    val_batch_size = val_batch_size or (128 if cuda else 64)
 
-    train_loader = torch.utils.data.DataLoader(train_ds, **dataloader_args)
+    train_dataloader_args = dict(shuffle=True, batch_size=train_batch_size, num_workers=4, pin_memory=True) if cuda else dict(shuffle=True, batch_size=train_batch_size)
+    val_dataloader_args = dict(shuffle=True, batch_size=val_batch_size, num_workers=4, pin_memory=True) if cuda else dict(shuffle=True, batch_size=val_batch_size)
+    # dataloader_args = dict(shuffle=True, batch_size=128, num_workers=4, pin_memory=True) if cuda else dict(shuffle=True, batch_size=64)
 
-    test_loader = torch.utils.data.DataLoader(test_ds, **dataloader_args)
+    train_loader = torch.utils.data.DataLoader(train_ds, **train_dataloader_args)
+    test_loader = torch.utils.data.DataLoader(test_ds, **val_dataloader_args)
 
     return train_loader, test_loader
