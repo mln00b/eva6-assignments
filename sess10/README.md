@@ -7,9 +7,10 @@ Augmentations Used:
 2. Horizontal Flip - probability - `0.5`
 3. CutOut - size `(32,32)`, probability - `0.5`
 
-SGD Optimizer, trained using One Cycle LR
-Max LR: 1.0
-Trained for 10 epochs
+Training Technique:
+1. SGD Optimizer, trained using One Cycle LR
+2. Max LR: 1.0
+3. Trained for 10 epochs
 
 Achieves `53.80% validation accuracy`, on the 10th Epoch.
 
